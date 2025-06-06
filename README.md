@@ -1,57 +1,69 @@
-# 📊 Big Data Pipeline for Stock Data
+# 📊 Big Data Pipeline for Real-Time Stock Analytics
 
-**Author:** Nguyễn Trung Đức  
-**Technologies:** Hadoop · PySpark · Apache Kafka · Apache Airflow · Docker · Python  
+**👨‍💻 Tác giả:** Nguyễn Trung Đức  
+**🛠️ Công nghệ sử dụng:** Apache Hadoop · PySpark · Apache Kafka · Apache Airflow · Apache Superset · Docker · Python  
+**💻 Môi trường phát triển:** Ubuntu 24.04
 
-## 🚀 Mô tả dự án
+---
 
-Dự án xây dựng một **data pipeline** hoàn chỉnh để thu thập, xử lý và lưu trữ dữ liệu chứng khoán theo thời gian thực. Hệ thống sử dụng các công nghệ Big Data hiện đại nhằm đảm bảo khả năng mở rộng, tính tự động và hiệu suất cao.
+## 🚀 Giới thiệu dự án
 
-## 🧱 Kiến trúc tổng quan
+Dự án xây dựng một hệ thống **Data Pipeline** hoàn chỉnh giúp:
+- Tự động thu thập dữ liệu chứng khoán hằng ngày theo thời gian thực.
+- Xử lý dữ liệu với Spark.
+- Truyền tải dữ liệu qua Kafka.
+- Lưu trữ và phân tích với Hadoop, PostgreSQL và Superset.
+
+Mục tiêu là đảm bảo hệ thống **mở rộng**, **tự động hóa cao**, và **phân tích dữ liệu hiệu quả** theo chuẩn Big Data hiện đại.
+
+---
+
+## 🧱 Thành phần kiến trúc chính
+
+| Thành phần         | Vai trò                                                                 |
+|--------------------|-------------------------------------------------------------------------|
+| **Kafka**          | Giao tiếp streaming, truyền tải dữ liệu theo thời gian thực.            |
+| **PySpark**        | Xử lý dữ liệu phân tán tốc độ cao.                                      |
+| **Hadoop HDFS**    | Lưu trữ dữ liệu lớn theo dạng phân tán.                                 |
+| **Airflow**        | Orchestration và lập lịch thực thi các tác vụ ETL.                      |
+| **PostgreSQL**     | Cơ sở dữ liệu lưu trữ dữ liệu mart, dùng cho phân tích và báo cáo.      |
+| **Superset**       | Công cụ trực quan hóa dữ liệu mạnh mẽ, kết nối PostgreSQL để tạo Dashboard. |
+| **Docker**         | Đóng gói toàn bộ hệ thống trong container nhất quán, dễ triển khai.     |
+
+---
+
+## 📁 Cấu trúc thư mục
 
 
-- **Kafka:** Truyền tải dữ liệu thời gian thực.
-- **PySpark:** Xử lý dữ liệu phân tán với Spark.
-- **Hadoop HDFS:** Lưu trữ dữ liệu đầu ra.
-- **Airflow:** Lập lịch và điều phối quy trình ETL.
-- **Docker:** Môi trường triển khai đồng nhất và dễ kiểm soát.
+---
 
-## 📂 Cấu trúc thư mục
-
-scripts
-├── extract
-│   ├── download_stock.py
-│   ├── __init__.py
-│   └── __pycache__
-│       ├── download_stock.cpython-312.pyc
-│       └── __init__.cpython-312.pyc
-├── load
-│   ├── __init__.py
-│   ├── load_mart_to_postgres.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-312.pyc
-│   │   ├── load_mart_to_postgres.cpython-312.pyc
-│   │   ├── save_parquet.cpython-312.pyc
-│   │   └── send_to_kafka.cpython-312.pyc
-│   ├── save_parquet.py
-│   └── send_to_kafka.py
-├── main
-│   ├── __init__.py
-│   └── run_pipeline.py
-└── transform
-    ├── artifacts
-    ├── business_to_mart.py
-    ├── clean_and_save_csv.py
-    ├── core_to_business.py
-    ├── __init__.py
-    ├── __pycache__
-    │   ├── business_to_mart.cpython-312.pyc
-    │   ├── clean_and_save_csv.cpython-312.pyc
-    │   ├── core_to_business.cpython-312.pyc
-    │   ├── __init__.cpython-312.pyc
-    │   └── staging_to_core.cpython-312.pyc
-    └── staging_to_core.py
-
-## 🖼️ Kiến trúc Pipeline
+## 🖼️ Kiến trúc hệ thống Pipeline
 
 ![Pipeline Kiến trúc](images/pipeline_bigdata.svg)
+
+Luồng dữ liệu như sau:
+
+1. **Extract**: Tải dữ liệu chứng khoán qua `yfinance`.
+2. **Transform**: Làm sạch & xử lý qua các tầng Staging → Core → Business → Mart.
+3. **Load**:
+   - Lưu bản Parquet.
+   - Gửi bản Business vào Kafka topic.
+   - Đẩy bản Mart vào PostgreSQL.
+4. **Visualize**: Truy cập từ Superset để phân tích/giám sát.
+
+---
+
+## 📊 Trực quan hóa với Apache Superset
+
+- **Nguồn dữ liệu**: kết nối trực tiếp với PostgreSQL chứa dữ liệu mart.
+- **Dashboard**: dễ dàng tạo biểu đồ xu hướng chứng khoán, khối lượng giao dịch theo tháng, v.v.
+- **Phân quyền**: tích hợp người dùng xem dashboard theo role.
+
+---
+
+## ⚙️ Hướng dẫn sử dụng
+
+### 1. 🐳 Khởi động môi trường
+
+```bash
+docker compose up --build
