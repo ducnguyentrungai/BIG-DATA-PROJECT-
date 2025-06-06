@@ -1,8 +1,21 @@
 # 📊 Big Data Pipeline for Real-Time Stock Analytics
 
 **👨‍💻 Tác giả:** Nguyễn Trung Đức  
-**🛠️ Công nghệ sử dụng:** Apache Hadoop · PySpark · Apache Kafka · Apache Airflow · Apache Superset · Docker · Python  
 **💻 Môi trường phát triển:** Ubuntu 24.04
+
+## 🛠️ Công nghệ sử dụng
+
+<p align="center">
+  <img src="https://www.python.org/static/community_logos/python-logo.png" alt="Python" height="50"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Apache_kafka-icon.svg" alt="Kafka" height="50"/>
+  <img src="https://airflow.apache.org/docs/apache-airflow/stable/_images/pin_large.png" alt="Airflow" height="50"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Hadoop_logo.svg" alt="Hadoop" height="50"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg" alt="Spark" height="50"/>
+  <img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL" height="50"/>
+  <img src="https://superset.apache.org/images/superset-logo-horiz.png" alt="Superset" height="50"/>
+  <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" height="50"/>
+  <img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" alt="Ubuntu" height="50"/>
+</p>
 
 ---
 
@@ -33,7 +46,6 @@ Mục tiêu là đảm bảo hệ thống **mở rộng**, **tự động hóa c
 ---
 
 ## 📁 Cấu trúc thư mục
-
 
 ---
 
