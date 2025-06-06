@@ -1,0 +1,9 @@
+yfinance
+kafka-python
+pandas
+pyarrow
+pyspark
+numpy
+matplotlib
+seaborn
+scikit-learn

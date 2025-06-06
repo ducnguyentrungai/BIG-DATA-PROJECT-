@@ -1,0 +1,24 @@
+FROM bitnami/spark:3.5
+
+USER root
+
+# Tạo thư mục ivy và jars
+RUN mkdir -p /opt/bitnami/spark/.ivy2/local /opt/bitnami/spark/jars
+
+# Tải Kafka connector JARs
+RUN curl -L -o /opt/bitnami/spark/jars/spark-sql-kafka-0-10_2.12-3.5.1.jar \
+    https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.1/spark-sql-kafka-0-10_2.12-3.5.1.jar && \
+    curl -L -o /opt/bitnami/spark/jars/kafka-clients-3.5.1.jar \
+    https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.5.1/kafka-clients-3.5.1.jar && \
+    curl -L -o /opt/bitnami/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.1.jar \
+    https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.1/spark-token-provider-kafka-0-10_2.12-3.5.1.jar
+
+# Gán user hợp lệ
+ENV USER=root
+ENV LOGNAME=root
+ENV HOME=/opt/bitnami/spark
+WORKDIR /opt/bitnami/spark
+
+# 🚀 CHẠY SPARK MASTER ĐÚNG CÁCH
+ENTRYPOINT [ "/opt/bitnami/scripts/spark/entrypoint.sh" ]
+CMD [ "/opt/bitnami/scripts/spark/run.sh" ]

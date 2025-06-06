@@ -1,0 +1,74 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+
+# Virtual environment
+.venv/
+env/
+ENV/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Logs
+logs/
+*.log
+
+# Airflow-specific
+airflow.db
+airflow-webserver.pid
+*.err
+*.out
+airflow.cfg
+unittests.cfg
+
+# Spark checkpoints
+checkpoint/
+.metastore/
+
+# PySpark temp
+*.crc
+*.parquet.crc
+spark-warehouse/
+
+# Parquet & CSV (intermediate data)
+warehouse/raw/
+warehouse/staging/
+warehouse/core/
+warehouse/business/
+warehouse/mart/
+data/
+*.csv
+*.parquet
+*.snappy.parquet
+_SUCCESS
+
+# Superset
+superset_home/
+
+# Docker
+*.pid
+*.sock
+*.tar
+.docker/
+docker-compose.override.yml
+.env
+
+# Jupyter
+.ipynb_checkpoints
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.bak
+*.tmp
+
+# Python packages cache
+pip-log.txt
+pip-delete-this-directory.txt
