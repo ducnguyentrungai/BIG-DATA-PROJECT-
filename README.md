@@ -14,7 +14,6 @@
 ![language](https://img.shields.io/badge/language-Python-blue?logo=python)
 ![dockerized](https://img.shields.io/badge/container-Docker-2496ED?logo=docker)
 ![os](https://img.shields.io/badge/OS-Ubuntu%2024.04-E95420?logo=ubuntu)
-git
 ---
 
 ## 🚀 Giới thiệu dự án
