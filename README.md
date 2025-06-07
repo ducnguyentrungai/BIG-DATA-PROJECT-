@@ -76,6 +76,7 @@ Luồng dữ liệu như sau:
 
 ```bash
 docker compose up --build
+```
 
 ## Kết quả
 
