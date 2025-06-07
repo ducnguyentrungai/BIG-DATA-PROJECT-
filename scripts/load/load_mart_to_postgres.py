@@ -73,7 +73,7 @@ def load_mart_to_postgres(mart_parquet_path: str, table_name: str = "stock_month
         if df.empty:
             raise ValueError("⚠️ Dữ liệu parquet rỗng.")
 
-        expected_columns = {"Year", "Month", "Average_Close", "Total_Volume"}
+        expected_columns = {"Year", "Month", "Avg_Adj_Close", "Total_Volume"}
         if not expected_columns.issubset(df.columns):
             raise ValueError(f"❌ Schema sai: thiếu cột {expected_columns - set(df.columns)}")
 
