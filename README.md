@@ -76,3 +76,7 @@ Luồng dữ liệu như sau:
 
 ```bash
 docker compose up --build
+
+## Kết quả
+
+![Kết quả phân tích](images/result1.png)
