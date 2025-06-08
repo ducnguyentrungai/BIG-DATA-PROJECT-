@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 import traceback
 from datetime import datetime
 import pandas as pd
@@ -16,6 +17,31 @@ from modeling.predict.predict_next_month import predict_next_month
 from load.save_parquet import save_to_parquet
 from load.load_mart_to_postgres import load_mart_to_postgres
 from load.save_forecast_to_postgres import save_forecast_to_postgres
+import psycopg2
+
+
+def init_forecast_table():
+    conn = psycopg2.connect(
+        dbname="airflow", user="airflow", password="airflow",
+        host="postgres", port=5432
+    )
+    cursor = conn.cursor()
+    create_sql = """
+        CREATE TABLE IF NOT EXISTS forecast_result (
+            id SERIAL PRIMARY KEY,
+            symbol TEXT,
+            current_price DOUBLE PRECISION,
+            predicted_return DOUBLE PRECISION,
+            predicted_price DOUBLE PRECISION,
+            forecast_month DATE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """
+    cursor.execute(create_sql)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print("✅ Đã khởi tạo bảng forecast_result.")
 
 
 def run_pipeline(symbol: str, csv_path: str,
@@ -26,9 +52,8 @@ def run_pipeline(symbol: str, csv_path: str,
     Pipeline ETL + ML cho dữ liệu chứng khoán.
     """
     try:
-        print(f"🚀 [START] Pipeline bắt đầu cho symbol: {symbol}")
-
-        
+        init_forecast_table()
+        print(f"🚀 [START] Pipeline bắt đầu cho symbol: {symbol}")        
         data = extract_stock_data(symbol)
         if data.empty:
             raise ValueError("❌ B1: Dữ liệu extract rỗng.")
@@ -62,7 +87,10 @@ def run_pipeline(symbol: str, csv_path: str,
         predicted_return, current_price, predicted_price = predict_next_month(mart_parquet_path, model_path)
         
         if predicted_price is not None:
-            print(f"📈 Dự đoán giá Avg_Adj_Close tháng tới: {predicted_price:.2f}")
+            percentage_change = ((predicted_price - current_price) / current_price) * 100
+            print(f"📈 Giá hiện tại: {current_price:.2f}")
+            print(f"📈 Dự đoán giá tháng tới: {predicted_price:.2f}")
+            print(f"📊 Tăng/Giảm: {percentage_change:+.2f}% so với tháng hiện tại")
             save_forecast_to_postgres(symbol, current_price, predicted_return, predicted_price)
         else:
             raise ValueError("❌ Dự đoán tháng tới thất bại.")
@@ -82,7 +110,6 @@ if __name__ == "__main__":
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
     today = datetime.today().strftime("%Y-%m-%d")
     symbol = "AAPL"
-
     run_pipeline(
         symbol=symbol,
         csv_path=os.path.join(base_dir, f"warehouse/raw/{symbol.lower()}_{today}.csv"),

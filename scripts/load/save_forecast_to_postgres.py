@@ -3,6 +3,11 @@ from datetime import datetime
 
 def save_forecast_to_postgres(symbol: str, current_price: float, predicted_return: float, predicted_price: float):
     try:
+        # ✅ Ép kiểu về Python float (tránh numpy.float32, float64,...)
+        current_price = float(current_price)
+        predicted_return = float(predicted_return)
+        predicted_price = float(predicted_price)
+
         conn = psycopg2.connect(
             dbname="airflow", user="airflow", password="airflow",
             host="postgres", port=5432
@@ -10,11 +15,18 @@ def save_forecast_to_postgres(symbol: str, current_price: float, predicted_retur
         cursor = conn.cursor()
 
         forecast_month = datetime.today().replace(day=1)
+
         insert_sql = """
             INSERT INTO forecast_result (symbol, current_price, predicted_return, predicted_price, forecast_month)
             VALUES (%s, %s, %s, %s, %s)
         """
-        cursor.execute(insert_sql, (symbol, current_price, predicted_return, predicted_price, forecast_month))
+        cursor.execute(insert_sql, (
+            symbol,
+            current_price,
+            predicted_return,
+            predicted_price,
+            forecast_month
+        ))
         conn.commit()
         cursor.close()
         conn.close()
