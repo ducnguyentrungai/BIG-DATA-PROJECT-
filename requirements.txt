@@ -1,9 +1,11 @@
-yfinance
+yfinance>=0.2.0
 kafka-python
-pandas
-pyarrow
-pyspark
-numpy
+pandas>=1.5
+pyarrow>=10.0
+pyspark>=3.4
+numpy>=1.21
 matplotlib
 seaborn
-scikit-learn
+scikit-learn>=1.1
+xgboost>=1.6
+psycopg2-binary
