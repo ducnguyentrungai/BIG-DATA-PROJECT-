@@ -141,8 +141,6 @@ def transform_core_to_business(core_path: str, business_path: str):
 
 
 
-
-
 # if __name__ == "__main__":
 #     df = pd.read_parquet('/home/trungduc/airflow/warehouse/business/aapl_business.parquet')
 #     print(df.head(5))
