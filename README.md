@@ -81,6 +81,6 @@ docker compose up --build
 ## Kết quả
 
 ![Kết quả phân tích](images/result.png)
-📈 Giá hiện tại: 0.26
-📈 Dự đoán giá tháng tới: 0.26
-📊 Tăng/Giảm: +0.38% so với tháng hiện tại
+- 📈 Giá hiện tại: 0.26
+- 📈 Dự đoán giá tháng tới: 0.26
+- 📊 Tăng/Giảm: +0.38% so với tháng hiện tại
