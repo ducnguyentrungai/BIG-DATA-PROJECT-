@@ -58,9 +58,3 @@ def transform_staging_to_core(staging_path: str, core_output_path: str):
         return None
     finally:
         spark.stop()
-
-if __name__ == "__main__":
-    # df = transform_staging_to_core(staging_path='/home/trungduc/airflow/warehouse/staging/aapl.parquet',
-    #                           core_output_path='/home/trungduc/airflow/warehouse/core/test.parquet')
-   df = pd.read_parquet('/home/trungduc/airflow/warehouse/core/aapl_core.parquet')
-   print(df.head(5))

@@ -5,42 +5,6 @@ from pyspark.sql.functions import (
 )
 import os
 
-# def transform_business_to_mart(business_path: str, mart_output_path: str):
-#     spark = SparkSession.builder.appName("BusinessToMartStockETL").getOrCreate()
-#     try:
-#         if not os.path.exists(business_path):
-#             raise FileNotFoundError(f"❌ Không tìm thấy dữ liệu Business tại: {business_path}")
-#         df = spark.read.parquet(business_path)
-
-#         # Đảm bảo đủ cột
-#         required_cols = ["Adj Close", "VWAP", "MA20", "Return", "CumulativeReturn", "GapPercent", "Volume"]
-#         missing = [c for c in required_cols if c not in df.columns]
-#         if missing:
-#             raise ValueError(f"❌ Thiếu các cột bắt buộc: {missing}")
-
-#         df = df.withColumn("Year", year(col("Date"))) \
-#                .withColumn("Month", month(col("Date")))
-
-#         df_monthly = df.groupBy("Year", "Month").agg(
-#             avg("Adj Close").alias("Avg_Adj_Close"),
-#             avg("VWAP").alias("Average_VWAP"),
-#             avg("MA20").alias("Average_MA20"),
-#             avg("Return").alias("Average_Return"),
-#             avg("GapPercent").alias("Average_GapPercent"),
-#             avg("CumulativeReturn").alias("Average_CumulativeReturn"),
-#             spark_sum("Volume").alias("Total_Volume"),
-#             spark_max("Date").alias("Last_Date")
-#         )
-
-#         df_monthly.write.mode("overwrite").parquet(mart_output_path)
-#         print(f"✅ Đã ghi dữ liệu Mart vào: {mart_output_path}")
-#         return df_monthly
-
-#     except Exception as e:
-#         print(f"❌ Lỗi Business → Mart: {e}")
-#     finally:
-#         spark.stop()
-
 def transform_business_to_mart(business_path: str, mart_output_path: str):
     spark = SparkSession.builder.appName("BusinessToMartStockETL").getOrCreate()
     try:
@@ -50,7 +14,7 @@ def transform_business_to_mart(business_path: str, mart_output_path: str):
 
         # Đảm bảo đủ cột
         required_cols = [
-            "Adj Close", "VWAP", "MA20", "Return", "CumulativeReturn",
+            "Open", "Adj Close", "VWAP", "MA20", "Return", "CumulativeReturn",
             "GapPercent", "Volume", "UpperBand", "LowerBand", "STD20"
         ]
         missing = [c for c in required_cols if c not in df.columns]
@@ -63,6 +27,7 @@ def transform_business_to_mart(business_path: str, mart_output_path: str):
 
         # Tổng hợp dữ liệu theo tháng (đầy đủ đặc trưng hơn)
         df_monthly = df.groupBy("Year", "Month").agg(
+            avg("Open").alias("Average_Open"),
             avg("Adj Close").alias("Avg_Adj_Close"),
             avg("VWAP").alias("Average_VWAP"),
             avg("MA20").alias("Average_MA20"),
@@ -75,7 +40,7 @@ def transform_business_to_mart(business_path: str, mart_output_path: str):
             spark_min("LowerBand").alias("Min_LowerBand"),
             spark_max("Date").alias("Last_Date")
         )
-
+        
         df_monthly.write.mode("overwrite").parquet(mart_output_path)
         print(f"✅ Đã ghi dữ liệu Mart vào: {mart_output_path}")
         return df_monthly

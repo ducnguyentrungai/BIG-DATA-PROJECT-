@@ -12,6 +12,7 @@ venv/
 *.egg-info/
 dist/
 build/
+appl_env/
 
 # Logs
 logs/
